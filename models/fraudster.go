@@ -5,7 +5,7 @@ import (
 )
 
 type Fraudster struct {
-	ID                    primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	ID                    primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
 	Name                  string `json:"name" bson:"name"`
 	Aliases               string `json:"aliases" bson:"aliases"`
 	KnownLocations        string `json:"known_locations" bson:"known_locations"`
