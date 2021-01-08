@@ -9,7 +9,8 @@ import (
 func FetchFraudsters() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		params := new(models.PageSortParams)
-		if err := c.Bind(params); err != nil {
+		binder := echo.DefaultBinder{}
+		if err := binder.BindQueryParams(c, params); err != nil {
 			c.Error(
 				&echo.HTTPError{
 					Message:  "bind error occurred",
