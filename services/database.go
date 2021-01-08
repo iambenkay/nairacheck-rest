@@ -15,6 +15,7 @@ func InitializeDatabaseConnection(uri string) {
 		if err != nil {
 			panic(err)
 		}
+
 		Bean.DatabaseClient = client
 
 		err = client.Ping(ctx, readpref.Primary())
@@ -22,5 +23,13 @@ func InitializeDatabaseConnection(uri string) {
 			panic(err)
 		}
 		fmt.Println("Database connection was successful")
+	})
+}
+
+func DestroyDatabaseConnection() {
+	utils.Contextualize(func(ctx context.Context) {
+		if err := Bean.DatabaseClient.Disconnect(ctx); err != nil {
+			panic(err)
+		}
 	})
 }

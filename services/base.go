@@ -6,7 +6,7 @@ import (
 )
 
 type ServiceGroup struct {
-	Server *echo.Echo
+	Server         *echo.Echo
 	DatabaseClient *mongo.Client
 }
 
