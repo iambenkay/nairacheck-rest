@@ -16,7 +16,11 @@ func FetchSingleFraudster() echo.HandlerFunc {
 		}).BindError()
 
 		if bindErr != nil {
-			return bindErr
+			return &echo.HTTPError{
+				Message:  bindErr.Error(),
+				Code:     400,
+				Internal: bindErr,
+			}
 		}
 
 		fraudster, err := models.FindOneFraudster(*filters)
@@ -26,6 +30,13 @@ func FetchSingleFraudster() echo.HandlerFunc {
 				Code:     400,
 				Internal: err,
 			}
+		}
+		if fraudster == nil {
+			return c.JSON(404, response{
+				Message: "Fraudster was not found",
+				Error:   true,
+				Data:    nil,
+			})
 		}
 		return c.JSON(200, response{
 			Message: "Fraudster fetched successfully",

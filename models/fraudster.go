@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/iambenkay/nairacheck/utils"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -19,6 +20,7 @@ type Fraudster struct {
 	ReporterContact       string             `json:"reporter_contact" bson:"reporter_contact,omitempty" query:"reporter_contact"`
 	DateCreated           string             `json:"date_created" bson:"date_created,omitempty" query:"date_created"`
 	Summary               string             `json:"summary" bson:"summary,omitempty" query:"summary"`
+	Verified              *bool              `json:"verified" bson:"verified,omitempty" query:"verified"`
 }
 
 func FindOneFraudster(filter interface{}) (*Fraudster, error) {
@@ -26,9 +28,7 @@ func FindOneFraudster(filter interface{}) (*Fraudster, error) {
 
 	err := findOne(filter, result, "fraudsters")
 
-	zero := Fraudster{}
-
-	if *result == zero {
+	if utils.IsStructEmpty(*result) {
 		return nil, err
 
 	}
