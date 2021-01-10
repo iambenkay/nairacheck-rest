@@ -85,6 +85,7 @@ func AddFraudster() echo.HandlerFunc {
 		if err := binder.BindBody(c, &fraudster); err != nil {
 			return err
 		}
+		*fraudster.Verified = false
 		fraudster, err := models.AddFraudster(fraudster)
 
 		if err != nil {

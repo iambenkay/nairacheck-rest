@@ -181,6 +181,36 @@ func updateOne(document interface{}, update interface{}, name string) (err error
 	return nil
 }
 
+func updateMany(document interface{}, update interface{}, name string) (err error) {
+	c := coll(name)
+
+	var doc *bson.D
+
+	doc, err = structOrMapToBson(document)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	update, err = structOrMapToBson(update)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	var result *mongo.UpdateResult
+	utils.Contextualize(func(ctx context.Context) {
+		result, err = c.UpdateMany(ctx, doc, bson.D{{"$set", update}})
+
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		fmt.Printf("Modified %v document(s) from %s collection\n", result.ModifiedCount, name)
+	})
+	return nil
+}
+
 func coll(name string) *mongo.Collection {
 	return services.Bean.DatabaseClient.Database("nairacheck").Collection(name)
 }
